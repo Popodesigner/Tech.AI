@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech AI - Diagnostica Avanzata</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Aggiungiamo QuaggaJS per la scansione -->
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+</head>
+<body>
+    <!-- Home Page -->
+    <div class="page" id="homePage">
+        <header>
+            <div class="home-header">
+                <h1>Tech<span>AI</span></h1>
+                <div class="header-description">
+                    <p class="main-description">Diagnostica guasti avanzata</p>
+                    <p class="sub-description">
+                        <i class="fas fa-robot"></i>
+                        Assistenza intelligente per tecnici
+                    </p>
+                    <div class="tech-tags">
+                        <span class="tech-tag"><i class="fas fa-tools"></i> Diagnostica</span>
+                        <span class="tech-tag"><i class="fas fa-brain"></i> AI Powered</span>
+                        <span class="tech-tag"><i class="fas fa-clock"></i> Real-time</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="main-buttons">
+            <button id="scannerBtn" class="btn-primary">
+                <i class="fas fa-qrcode"></i>
+                <span>SCANSIONA QRCODE</span>
+            </button>
+            <button id="productsBtn" class="btn-primary">
+                <i class="fas fa-tools"></i>
+                <span>PRODOTTI</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Pagina Prodotti -->
+    <div class="page hidden" id="productsPage">
+        <header>
+            <button class="back-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="page-header">
+                <h2>Prodotti</h2>
+                <p class="page-description">Esplora la nostra gamma di prodotti</p>
+            </div>
+        </header>
+        <div class="products-grid">
+            <button class="category-btn" data-category="caldaie">
+                <i class="fas fa-fire"></i>
+                <span>CALDAIE</span>
+            </button>
+            <button class="category-btn" data-category="pdc">
+                <i class="fas fa-wind"></i>
+                <span>PDC</span>
+            </button>
+            <button class="category-btn" data-category="solare">
+                <i class="fas fa-sun"></i>
+                <span>SOLARE</span>
+            </button>
+            <button class="category-btn" data-category="acqua">
+                <i class="fas fa-tint"></i>
+                <span>ACQUA</span>
+            </button>
+            <button class="category-btn" data-category="pompe">
+                <i class="fas fa-pump-soap"></i>
+                <span>POMPE</span>
+            </button>
+            <button class="category-btn" data-category="normative">
+                <i class="fas fa-book"></i>
+                <span>NORMATIVE</span>
+            </button>
+            <button class="category-btn" data-category="elettrici">
+                <i class="fas fa-bolt"></i>
+                <span>ELETTRICI</span>
+            </button>
+            <button class="category-btn" data-category="centraline">
+                <i class="fas fa-microchip"></i>
+                <span>CENTRALINE</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Pagina Selezione Prodotto -->
+    <div class="page hidden" id="productSelectionPage">
+        <header>
+            <button class="back-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="page-header">
+                <h2>Seleziona Prodotto</h2>
+                <p class="page-description">Scegli la marca e il modello desiderati</p>
+            </div>
+        </header>
+        <div class="selection-form">
+            <select id="brandSelect">
+                <option value="">Seleziona marca</option>
+            </select>
+            <select id="modelSelect">
+                <option value="">Seleziona modello</option>
+            </select>
+            <button id="confirmProduct" class="btn-primary">CONFERMA</button>
+        </div>
+    </div>
+
+    <!-- Pagina Scanner -->
+    <div class="page hidden" id="scannerPage">
+        <header>
+            <button class="back-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="page-header">
+                <h2>Scansiona QR Code</h2>
+                <p class="page-description">Utilizza la fotocamera per scansionare il codice</p>
+            </div>
+        </header>
+        <div id="interactive" class="viewport"></div>
+    </div>
+
+    <!-- Pagina Chat -->
+    <div class="page hidden" id="chatPage">
+        <header>
+            <button class="back-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="page-header">
+                <h2>Assistente AI</h2>
+                <p class="page-description">Chatta con il nostro assistente virtuale</p>
+            </div>
+        </header>
+        <div class="chat-container">
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Scrivi un messaggio...">
+                <button id="sendMessage" class="btn-primary">Invia</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagina Ricerca -->
+    <div class="page hidden" id="searchPage">
+        <header>
+            <div class="page-header">
+                <h2>Cerca</h2>
+                <p class="page-description">Trova rapidamente ciò di cui hai bisogno</p>
+            </div>
+        </header>
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="globalSearch" placeholder="Cerca prodotti, errori, manuali...">
+                <button class="voice-search-btn">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
+            
+            <div class="search-filters">
+                <button class="filter-chip active" data-filter="all">
+                    <i class="fas fa-border-all"></i> Tutto
+                </button>
+                <button class="filter-chip" data-filter="products">
+                    <i class="fas fa-tools"></i> Prodotti
+                </button>
+                <button class="filter-chip" data-filter="errors">
+                    <i class="fas fa-exclamation-triangle"></i> Errori
+                </button>
+                <button class="filter-chip" data-filter="manuals">
+                    <i class="fas fa-book"></i> Manuali
+                </button>
+            </div>
+            
+            <div class="recent-searches">
+                <h3>Ricerche Recenti</h3>
+                <div class="recent-list">
+                    <!-- Popolato dinamicamente -->
+                </div>
+            </div>
+            
+            <div class="search-results hidden">
+                <div class="results-summary">
+                    <span class="results-count">0 risultati</span>
+                    <div class="sort-options">
+                        <button class="sort-btn active" data-sort="relevance">
+                            <i class="fas fa-sort"></i> Rilevanza
+                        </button>
+                        <button class="sort-btn" data-sort="date">
+                            <i class="fas fa-calendar"></i> Data
+                        </button>
+                    </div>
+                </div>
+                <div class="results-list">
+                    <!-- Popolato dinamicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagina Profilo -->
+    <div class="page hidden" id="profilePage">
+        <header>
+            <div class="page-header">
+                <h2>Profilo</h2>
+                <p class="page-description">Gestisci le tue informazioni e impostazioni</p>
+            </div>
+        </header>
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h3>Tecnico</h3>
+                <p class="profile-role">Specialista Assistenza</p>
+            </div>
+            
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <i class="fas fa-tools"></i>
+                    <span class="stat-value">127</span>
+                    <span class="stat-label">Interventi</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-star"></i>
+                    <span class="stat-value">4.8</span>
+                    <span class="stat-label">Rating</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-certificate"></i>
+                    <span class="stat-value">12</span>
+                    <span class="stat-label">Certificazioni</span>
+                </div>
+            </div>
+            
+            <div class="profile-sections">
+                <button class="profile-section-btn">
+                    <i class="fas fa-history"></i>
+                    <span>Storico Interventi</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="profile-section-btn">
+                    <i class="fas fa-certificate"></i>
+                    <span>Certificazioni</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="profile-section-btn">
+                    <i class="fas fa-cog"></i>
+                    <span>Impostazioni</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="profile-section-btn">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Supporto</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar (fuori dalle pagine per essere sempre visibile) -->
+    <nav class="bottom-nav">
+        <button class="nav-btn" data-page="home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </button>
+        <button class="nav-btn" data-page="products">
+            <i class="fas fa-tools"></i>
+            <span>Prodotti</span>
+        </button>
+        <button class="nav-btn" data-page="scanner">
+            <i class="fas fa-qrcode"></i>
+            <span>Scanner</span>
+        </button>
+        <button class="nav-btn" data-page="search">
+            <i class="fas fa-search"></i>
+            <span>Cerca</span>
+        </button>
+        <button class="nav-btn" data-page="profile">
+            <i class="fas fa-user"></i>
+            <span>Profilo</span>
+        </button>
+    </nav>
+
+    <script src="js/scanner.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
